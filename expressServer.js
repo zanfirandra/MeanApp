@@ -2,6 +2,7 @@
 ----Notes----
 Cross-origin resource sharing (CORS) allows AJAX requests to skip the Same-origin policy and access resources from remote hosts.
 origin = Two pages have the same origin if the protocol, port (if one is specified), and host are the same for both pages;  https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy
+express.static built-in middleware function in Express and this in your .html file: <link rel="stylesheet" href="style.css">
 
 */
 
@@ -9,6 +10,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const cors = require('cors');
+app.use(express.static("."));
 
 app.use(cors());
 
@@ -25,6 +27,10 @@ app.get('/index',function(req,res){
 
 app.get('/login',function(req,res){
   res.sendFile(path.join(__dirname+'/login.html'));
+});
+
+app.get('/register',function(req,res){
+  res.sendFile(path.join(__dirname+'/register.html'));
 });
 
 
