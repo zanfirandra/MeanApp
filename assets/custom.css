@@ -38,3 +38,7 @@ div {
     height: 500px;
 }
 
+#notFound {
+    align-content: center;
+    margin-top: 100px;
+}

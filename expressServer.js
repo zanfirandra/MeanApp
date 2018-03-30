@@ -20,19 +20,24 @@ app.use(cors());
 	res.send("hello world");
 }); */
 
+
 app.get('/index',function(req,res){
   res.sendFile(path.join(__dirname+'/index.html'));
   //__dirname : It will resolve to your project folder.
 });
 
 app.get('/login',function(req,res){
-  res.sendFile(path.join(__dirname+'/login.html'));
+  res.sendFile(path.join(__dirname+'/views/login.html'));
 });
 
 app.get('/register',function(req,res){
-  res.sendFile(path.join(__dirname+'/register.html'));
+  res.sendFile(path.join(__dirname+'/views/register.html'));
 });
 
+
+/*app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname+'/index.html'));
+})*/
 
 app.get('/user', function (req,res) {
 	var user = [{"userName": "andra",
