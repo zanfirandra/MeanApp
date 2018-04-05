@@ -10,7 +10,7 @@
  * Main module of the application.
  */
 angular
-  .module('meanapp',['ngRoute'])
+  .module('meanapp',['ngRoute', 'ngMessages','ngMaterial'])
   .config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     

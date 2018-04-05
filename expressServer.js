@@ -4,21 +4,34 @@ Cross-origin resource sharing (CORS) allows AJAX requests to skip the Same-origi
 origin = Two pages have the same origin if the protocol, port (if one is specified), and host are the same for both pages;  https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy
 express.static built-in middleware function in Express and this in your .html file: <link rel="stylesheet" href="style.css">
 
+~body-parser = 
 */
 
-const express = require('express');
-const path = require('path');
-const app = express();
-const cors = require('cors');
-app.use(express.static("."));
+var express = require('express');
+var path = require('path');
+var app = express();
+var cors = require('cors');
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
+app.use(express.static("."));
 app.use(cors());
+app.use(bodyParser.json());
 
 //app.get('/', (req, res) => res.send('hello world'));
 
 /*app.get('/', function (req,res) {
 	res.send("hello world");
 }); */
+mongoose.connect('mongodb://localhost/MeanDB');
+//schema definition
+var userSchema  = new mongoose.Schema({
+    username: String,
+    password: String
+})
+
+//convert userSchema into a model so we can work with it
+var userModel = mongoose.model('User', userSchema); // instances of Models are documents.
 
 
 app.get('/index',function(req,res){
@@ -27,24 +40,20 @@ app.get('/index',function(req,res){
 });
 
 app.get('/login',function(req,res){
-  res.sendFile(path.join(__dirname+'/views/login.html'));
+  res.sendFile(path.join(__dirname+'/index.html'));
 });
 
 app.get('/register',function(req,res){
-  res.sendFile(path.join(__dirname+'/views/register.html'));
+  res.sendFile(path.join(__dirname+'/index.html'));
 });
 
-
-/*app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname+'/index.html'));
-})*/
-
-app.get('/user', function (req,res) {
-	var user = [{"userName": "andra",
-				 "id": 1},
-				 {"userName": "ioana",
-				 "id": 2}]
-	res.send(user);
+app.post('/register', function(req,res){
+    //userModel.create({username: })
+    console.log(req.body);
+    res.send(req.body);
+    userModel.create({username: req.body.username,password: req.body.password}, function(err){
+        if(err) return handleError(err);
+    })
 });
 
 app.listen(3000, function() { // port 3000. localhost:3000

@@ -1,55 +1,31 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel = "stylesheet" href = "assets/css/fontawesome.css">
-    <link rel = "stylesheet" href = "assets/custom.css"> 
-    <!-- Optional theme -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src = "bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src = "assets/js/fontawesome-all.js"></script>
-    <script src="/bower_components/angular/angular.js"></script>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="index">Aplication</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="index">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="register">Register</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    <section class = "container main-container">
-        <form method="post" class="formular">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><div style="font-size: 19px;padding: 4px;"><i class="fas fa-user"></i></div></span>
-                  <input type="text" class="form-control" placeholder="Username">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><div style="font-size: 19px;padding: 4px;"><i class="fas fa-key"></i></div></span>
-                  <input type="password" class="form-control" placeholder="Password">
-                </div>
-            </div>
+<section class = "container main-container">
+        <form method="post" class="formular" name = "loginForm">
+            <md-input-container class="md-block md-icon-left" flex>
+                
+                  <md-icon class="material-icons"><i class="fas fa-user"></i></md-icon> 
+                  <input type="text" class="form-control" placeholder="Username" ng-model = "username" name = "userName" minlength="5" maxlength="15" required/>
+                    
+                    <div ng-messages="registerForm.userName.$error" style="color:tomato" role="alert" multiple>
+                        <div ng-message="minlength">Your username is too short</div>
+                        <div ng-message="maxlength">Your username is too long</div>
+                    </div>
+                
+            </md-input-container>
+            
+            <md-input-container class="md-block md-icon-left" flex>
+                
+                  <md-icon class="material-icons"><i class="fas fa-key"></i></md-icon> 
+                  <input type="password" class="form-control" placeholder="Password" ng-model = "password" name = "userPassword" ng-minlength="5" ng-maxlength="15" required/>
+                    
+                    <div ng-messages="registerForm.userPassword.$error" style="color:tomato" role="alert" multiple>
+                        <div ng-message="minlength">Your password is too short</div>
+                        <div ng-message="maxlength">Your password is too long</div>
+                    </div>
+                
+            </md-input-container>
+
              <div class="form-group pull-left">
-                <button class="btn btn-lg btn-success btn-block login" type="submit" name="submit">Login</button>
+                <button class="btn btn-lg btn-success btn-block login" type="submit" name="submit" ng-click = "loginUser()" ng-disabled="!loginForm.$valid" >Login</button>
             </div>
         </form>        
     </section>
-</body>
-</html>

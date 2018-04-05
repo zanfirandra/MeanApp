@@ -14,5 +14,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "angular-messages": "^1.6.9",
+    "angular-material": "^1.1.8"
+  }
 }
