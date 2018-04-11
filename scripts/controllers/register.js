@@ -1,13 +1,12 @@
-'use strict';
 
-/**
+'use strict';
+/*
+*
  * @ngdoc function
  * @name meanapp.controller:RegisterCtrl
- * @description
- * # AboutCtrl
- * Controller of the todoApp
- */
-angular.module('meanapp', ['ngRoute'])
+*/
+ 
+angular.module('meanapp')
   .controller('RegisterCtrl', function ($scope, $http) {  //$http request. asem ajax
     
     //function to reset form after submit
@@ -53,3 +52,4 @@ angular.module('meanapp', ['ngRoute'])
                 }
         };
     });
+
