@@ -8,13 +8,6 @@
  
 angular.module('meanapp')
   .controller('RegisterCtrl', function ($scope, $http) {  //$http request. asem ajax
-    
-    //function to reset form after submit
-    $scope.reset = function(original){
-        $scope.permission= angular.copy(original)
-        $scope.form2.$setPristine();
-        $scope.form2.$setUntouched();
-    }
  	
     $scope.registerUser = function() {
          var user = {
@@ -24,12 +17,16 @@ angular.module('meanapp')
         
     $http.post("/register", user).then(
         function(response){
-            console.log('success');
-            var original = $scope.permission;
-            $scope.reset(original);
+            if(response.data.indexOf("errorCreateUser") >= 0){
+                var getResponse = response.data.split(":");
+                $scope.alertCreateUser = getResponse[1];
+            } else if(response.data.indexOf("successCreateUser") >= 0){ 
+                var getResponse = response.data.split(":");
+                $scope.alertCreateUser = getResponse[1];
+            }
         },
         function(response){
-            console.log('fail');
+            alert('Oops! Something went wrong! Please try again!');
         }
     );
     

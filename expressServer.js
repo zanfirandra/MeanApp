@@ -4,7 +4,7 @@ Cross-origin resource sharing (CORS) allows AJAX requests to skip the Same-origi
 origin = Two pages have the same origin if the protocol, port (if one is specified), and host are the same for both pages;  https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy
 express.static built-in middleware function in Express and this in your .html file: <link rel="stylesheet" href="style.css">
 
-~body-parser = 
+//
 */
 
 var express = require('express');
@@ -13,6 +13,7 @@ var app = express();
 var cors = require('cors');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var http = require('http');
 
 app.use(express.static("."));
 app.use(cors());
@@ -49,11 +50,22 @@ app.get('/register',function(req,res){
 
 app.post('/register', function(req,res){
     //userModel.create({username: })
-    console.log(req.body);
-    res.send(req.body);
-    userModel.create({username: req.body.username,password: req.body.password}, function(err){
-        if(err) return handleError(err);
+    //console.log(req.body);
+    //res.send(req.body);
+    
+    userModel.find({"username": req.body.username}, function(err, usernames){
+        console.log(usernames);
+        if (usernames.length>= 1) {
+           res.send("errorCreateUser: User already created! Please try again using another username.");//return res.status(500).send(err);
+            //console.log(usernames);
+            console.log(req.body.username);
+        } else {
+            userModel.create({username: req.body.username,password: req.body.password}, function(err){
+                res.send("successCreateUser: Congrats! You have successfully registered! ")
+            })
+        }
     })
+    
 });
 
 app.listen(3000, function() { // port 3000. localhost:3000
