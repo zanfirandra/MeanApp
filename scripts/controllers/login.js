@@ -10,6 +10,21 @@
 angular.module('meanapp')
   .controller('LoginCtrl', function ($scope, $http) {
  	
+    $scope.loginUser = function(){
+        var user = {
+            'username': $scope.username,
+            'password': $scope.password
+        }
+        
+        $http.post("/login",user).then(
+            function(response){
+                console.log(response)
+            },
+            function(response){
+                alert('Oops! Something went wrong! Please try again!');
+            }
+        )
+    }
 
    
   });

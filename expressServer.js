@@ -68,6 +68,13 @@ app.post('/register', function(req,res){
     
 });
 
+app.post('/login', function(req,res){
+    
+    userModel.findOne({"username": req.body.username}, function(err, user){
+        res.send(user.password)
+    })
+});
+
 app.listen(3000, function() { // port 3000. localhost:3000
 	console.log('Server starting...');
 })

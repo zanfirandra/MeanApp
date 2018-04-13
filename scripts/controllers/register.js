@@ -15,20 +15,20 @@ angular.module('meanapp')
             'password': $scope.password
         }
         
-    $http.post("/register", user).then(
-        function(response){
-            if(response.data.indexOf("errorCreateUser") >= 0){
-                var getResponse = response.data.split(":");
-                $scope.alertCreateUser = getResponse[1];
-            } else if(response.data.indexOf("successCreateUser") >= 0){ 
-                var getResponse = response.data.split(":");
-                $scope.alertCreateUser = getResponse[1];
+        $http.post("/register", user).then(
+            function(response){ //success
+                if(response.data.indexOf("errorCreateUser") >= 0){
+                    var getResponse = response.data.split(":");
+                    $scope.alertCreateUser = getResponse[1];
+                } else if(response.data.indexOf("successCreateUser") >= 0){ 
+                    var getResponse = response.data.split(":");
+                    $scope.alertCreateUser = getResponse[1];
+                }
+            },
+            function(response){ //fail
+                alert('Oops! Something went wrong! Please try again!');
             }
-        },
-        function(response){
-            alert('Oops! Something went wrong! Please try again!');
-        }
-    );
+        );
     
     }
    
