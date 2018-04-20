@@ -8,7 +8,7 @@
  * Controller of the meanapp
  */
 angular.module('meanapp')
-  .controller('LoginCtrl', function ($scope, $http) {
+  .controller('LoginCtrl', function ($scope, $http, $window) {
  	
     $scope.loginUser = function(){
         var user = {
@@ -18,12 +18,20 @@ angular.module('meanapp')
         
         $http.post("/login",user).then(
             function(response){
-                console.log(response)
-            },
-            function(response){
-                alert('Oops! Something went wrong! Please try again!');
+                if(response.data.indexOf("errorLoginUser") >= 0){
+                    var getResponse = response.data.split(":");
+                    $scope.alertLoginUser = getResponse[1];
+                } else 
+                    return true;
             }
-        )
+        ).then( function(response){
+            if(response === true){
+                //var host = $window.location.host;
+                //var protocol = $window.location.protocol;
+                var pathToLogin = "/upload"
+                $window.location.href = pathToLogin;
+            }
+        });
     }
 
    

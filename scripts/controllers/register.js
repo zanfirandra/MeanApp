@@ -7,7 +7,7 @@
 */
  
 angular.module('meanapp')
-  .controller('RegisterCtrl', function ($scope, $http) {  //$http request. asem ajax
+  .controller('RegisterCtrl', function ($scope, $http, $window) {  //$http request. asem ajax
  	
     $scope.registerUser = function() {
          var user = {
@@ -20,15 +20,26 @@ angular.module('meanapp')
                 if(response.data.indexOf("errorCreateUser") >= 0){
                     var getResponse = response.data.split(":");
                     $scope.alertCreateUser = getResponse[1];
-                } else if(response.data.indexOf("successCreateUser") >= 0){ 
+                    return false; //show error for user to try again to register
+                } else
+                    return true; //redirect to user's account
+                /*else if(response.data.indexOf("successCreateUser") >= 0){ 
                     var getResponse = response.data.split(":");
                     $scope.alertCreateUser = getResponse[1];
-                }
+                    return true;
+                }*/
             },
             function(response){ //fail
                 alert('Oops! Something went wrong! Please try again!');
             }
-        );
+        ).then( function(response){
+            if(response === true){
+                //var host = $window.location.host;
+                //var protocol = $window.location.protocol;
+                var pathToLogin = "/upload"
+                $window.location.href = pathToLogin;
+            }
+        });
     
     }
    

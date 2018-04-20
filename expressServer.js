@@ -48,17 +48,21 @@ app.get('/register',function(req,res){
   res.sendFile(path.join(__dirname+'/index.html'));
 });
 
+app.get('/upload',function(req,res){
+  res.sendFile(path.join(__dirname+'/index.html'));
+});
+
 app.post('/register', function(req,res){
     //userModel.create({username: })
     //console.log(req.body);
     //res.send(req.body);
     
     userModel.find({"username": req.body.username}, function(err, usernames){
-        console.log(usernames);
+        //console.log(usernames);
         if (usernames.length>= 1) {
            res.send("errorCreateUser: User already created! Please try again using another username.");//return res.status(500).send(err);
             //console.log(usernames);
-            console.log(req.body.username);
+            //console.log(req.body.username);
         } else {
             userModel.create({username: req.body.username,password: req.body.password}, function(err){
                 res.send("successCreateUser: Congrats! You have successfully registered! ")
@@ -71,7 +75,12 @@ app.post('/register', function(req,res){
 app.post('/login', function(req,res){
     
     userModel.findOne({"username": req.body.username}, function(err, user){
-        res.send(user.password)
+        if(user === null){
+            res.send("errorLoginUser: Username is incorrect! Please try again!");
+        } else if(req.body.password == user.password)
+                    res.send(user.password)
+                else 
+                    res.send("errorLoginUser:  password is incorrect! Please try again!");
     })
 });
 
