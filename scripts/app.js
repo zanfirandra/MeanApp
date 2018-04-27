@@ -10,9 +10,15 @@
  * Main module of the application.
  */
 angular
-  .module('meanapp',['ngRoute', 'ngMessages','ngMaterial'])
-  .config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
+  .module('meanapp',['ngRoute', 'ngMessages','ngMaterial','angular-jwt'])
+  .config(["$routeProvider", "$locationProvider", "jwtInterceptorProvider","$httpProvider", function ($routeProvider, $locationProvider, jwtInterceptorProvider,$httpProvider) {
     $locationProvider.html5Mode(true);
+      
+    jwtInterceptorProvider.tokenGetter = function(){
+        return localStorage.getItem('jwt'); //getting the jwt from localStorage
+    }
+    
+    $httpProvider.interceptors.push('jwtInterceptor');
     
     $routeProvider
      .when('/', {
@@ -30,8 +36,7 @@ angular
       })
       .when('/upload', {
         templateUrl: 'views/upload.html',
-        controller: 'UploadCtrl',
-        controllerAs: 'upload'
+        controller: 'UploadCtrl'
       })
       .when('/register', {
         templateUrl: 'views/register.html',
@@ -47,4 +52,23 @@ angular
     
     
   }])
+    .run(
+        function run($location,$http){
+            // keep user logged in after page refresh
+            if (localStorage.getItem('token')) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('token');
+                }
+        }
+    );
+ /*   .config(function Config($httpProvider, jwtOptionsProvider) {
+    // Please note we're annotating the function so that the $injector works when the file is minified
+    jwtOptionsProvider.config({
+      tokenGetter: ['jwtHelper', '$http', function(jwtHelper, $http) {
+        //myService.doSomething();
+        return localStorage.getItem('id_token');
+      }]
+    });
 
+    $httpProvider.interceptors.push('jwtInterceptor');
+  })
+ */

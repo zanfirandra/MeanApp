@@ -32,14 +32,14 @@ angular.module('meanapp')
             function(response){ //fail
                 alert('Oops! Something went wrong! Please try again!');
             }
-        ).then( function(response){
+        )/*.then( function(response){
             if(response === true){
                 //var host = $window.location.host;
                 //var protocol = $window.location.protocol;
                 var pathToLogin = "/upload"
                 $window.location.href = pathToLogin;
             }
-        });
+        });*/
     
     }
    
