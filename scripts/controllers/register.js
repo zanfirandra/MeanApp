@@ -7,7 +7,7 @@
 */
  
 angular.module('meanapp')
-  .controller('RegisterCtrl', function ($scope, $http, $window) {  //$http request. asem ajax
+  .controller('RegisterCtrl', function ($scope, $http, $window,$state) {  //$http request. asem ajax
  	
     $scope.registerUser = function() {
          var user = {
@@ -22,7 +22,8 @@ angular.module('meanapp')
                     $scope.alertCreateUser = getResponse[1];
                     return false; //show error for user to try again to register
                 } else
-                    return true; //redirect to user's account
+                    return true;
+                   // $state.go('login'); //redirect to user's account
                 /*else if(response.data.indexOf("successCreateUser") >= 0){ 
                     var getResponse = response.data.split(":");
                     $scope.alertCreateUser = getResponse[1];

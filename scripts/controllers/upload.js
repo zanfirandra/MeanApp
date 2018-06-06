@@ -8,18 +8,18 @@
  * Controller of the meanapp*/
  
 angular.module('meanapp')
-  .controller('UploadCtrl', function ($scope, $http) {
 
-    $http.get('/upload').then(function(response){
-        console.log(response);
-    })
+  .controller('UploadCtrl', function ($scope, $http, AuthTokenFactory) {
+    var token = AuthTokenFactory.getToken();
+    var config = {
+    headers:{ 'Authorization':  'Bearer ' + token} 
+    };
+
+   /* $http.post('/upload', undefined, config).then(
+    function(response){
+    console.log(response);
+    });*/
+    
+
   })
 
-.run(
-        function run($location,$http){
-            // keep user logged in after page refresh
-            if (localStorage.getItem('token')) {
-                    $http.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('token');
-                }
-        }
-    );
