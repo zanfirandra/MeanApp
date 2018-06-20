@@ -36,7 +36,7 @@ angular
       });
  })*/
 
-  .config(["$stateProvider","$urlRouterProvider", "$locationProvider", "jwtInterceptorProvider","$httpProvider", function ($stateProvider,$urlRouterProvider, $locationProvider, jwtInterceptorProvider,$httpProvider) {
+  .config(["$stateProvider","$urlRouterProvider", "$locationProvider", "$httpProvider", function ($stateProvider,$urlRouterProvider, $locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
      // $locationProvider.hashPrefix('');
       
@@ -97,6 +97,7 @@ angular
         }, 
         template : "<div></div>"
       });*/
+    
       
     $httpProvider.interceptors.push('AuthInterceptor'); //from factory
       
@@ -129,7 +130,8 @@ angular
           })
           .state('index', {
               url: '/index',
-              templateUrl: 'views/main.html'
+              templateUrl: 'views/main.html',
+              controller: 'MainCtrl'
           })
           .state('register', {
               url: '/register',

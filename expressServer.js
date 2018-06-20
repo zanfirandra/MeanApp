@@ -95,11 +95,11 @@ app.post('/register', function(req,res){
 
 });
 
-app.post('/login', function(req,res){
+app.post(['/login','/index'], function(req,res){
 
     userModel.findOne({"username": req.body.username}, function(err, user){
         if(user === null){
-            res.send("errorLoginUser: Wrong username! Please try again!");
+            res.send("errorLoginUser: Wrong username or password! Please try again!");
         } else {
             if(user.comparePassword(req.body.password)){
                 var token = jwt.sign({ id: user._id, username: user.username }, jwtSecret, { //paylod, key
@@ -110,77 +110,61 @@ app.post('/login', function(req,res){
                 });
             }
                 else
-                    res.send("errorLoginUser: Wrong password! Please try again!");
+                    res.send("errorLoginUser: Wrong username or password! Please try again!");
             }
         });
     
 });
 
-app.get('/upload', function(req,res,next){
-    console.log('HEADERS');
-    console.log(req.headers);
-    var token = req.headers['authorization'];
-    console.log(token);
 
-    /*if(token){
-        var bearer = token.split(" ");
-        var bearerToken = bearer[1];
-        req.token = bearerToken;
-        jwt.verify(req.token, jwtSecret, function(err,data){ //data: decoded payload
-        if(err){
-            res.status(500).send("invalid Token");
-        } else {
-           // next();
-            res.send("token provided");
-        }
-    })
-    } else {
-        res.send("no token provided");
-    }*/
-    next();
-});
-
-
-/*app.get('/upload', function(req, res){
-    console.log('verify Token');
-    jwt.verify(req.token, jwtSecret, function(err,data){ //data: decoded payload
-        if(err){
-            res.sendStatus(403);
-        } else {
-            res.json({
-            text: 'this is protected',
-            data:data
-            });
-        }
-    })
-      
-});*/
-/*
 //middleware function to verify whether or not token exits
+// don't want to protect /login or /register => beneath that routes
 function ensureToken(req, res, next){
-    console.log('ensure Token');
+    //console.log('ensure Token');
    // console.log(req.headers);
-    var authHeader = req.headers['Authorization'];
-    //console.log(authHeader);
+    var authHeader = req.headers['authorization'];
+    console.log(authHeader);
     if (typeof authHeader !== 'undefined'){
         var bearer = authHeader.split(" ");
         var bearerToken = bearer[1]; // ** Notes
         req.token = bearerToken;
         
-        console.log('verify Token');
+      
         jwt.verify(req.token, jwtSecret, function(err,data){ //data: decoded payload
         if(err){
-            res.sendStatus(403);
+             res.json({ 
+                 success: false,
+                 message: 'Unable to authenticate. Please try again.' });  
         } else {
+            //if everything is ok
             res.json({
-            text: 'this is protected',
-            data:data
+                success: true,
+                message: 'Welcome to your page!',
+                username: data.username
             });
+            next();
           }
         });
-    } else
-        console.log('Unauthorized');
-}*/
+    } else {
+        // if there is no token
+        // return an error
+        return res.status(403).send({ 
+            success: false, 
+            message: 'No token provided. Please try again.' 
+            });
+        }
+};
+
+app.post('/upload', ensureToken, function(req,res,next){
+   // console.log('HEADERS');
+   // console.log(req.headers);
+    var token = req.headers['authorization'];
+    // console.log(token);
+   
+
+});
+
+//app.use('/upload', ensureToken); //apply the routes to application with the prefix '/'
 
 app.route('/*').get(function(req, res) { 
     return res.sendFile(path.join(__dirname, '/index.html')); 

@@ -42,3 +42,16 @@ div {
     align-content: center;
     margin-top: 100px;
 }
+
+#toaster {
+  position: fixed;
+  top: 56px;
+  height: 48px;
+  left: 0;
+  width: 100%;
+  z-index: 10000;
+}
+
+md-toast.errorAuth .md-toast-content {
+    background-color: #e75454;
+}

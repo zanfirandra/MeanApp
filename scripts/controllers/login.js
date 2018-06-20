@@ -8,9 +8,9 @@
  * Controller of the meanapp
  $http - service
  */
-angular.module('meanapp'/*,['meanapp.factory']*/)
+angular.module('meanapp')
 
-  .controller('LoginCtrl', function ($scope, $http, $window,$location,$state, AuthTokenFactory) {
+  .controller('LoginCtrl', function ($scope, $http, $window, AuthenticateUserFactory) {
  	
     $scope.loginUser = function(){
         var user = {
@@ -19,7 +19,7 @@ angular.module('meanapp'/*,['meanapp.factory']*/)
         }
         
         $http.post("/login",user).then(
-            function(response){
+            /*function(response){
                 if( typeof response.data != 'object'){
                     if(response.data.indexOf("errorLoginUser") >= 0){
                         var getResponse = response.data.split(":");
@@ -29,29 +29,23 @@ angular.module('meanapp'/*,['meanapp.factory']*/)
                 } else {
                     if(response.data.token){
                         AuthTokenFactory.setToken(response.data.token); //factory
-
-                        //$location.path("/upload");
                         $window.location.href = "/upload";
-                         /*var token = AuthTokenFactory.getToken();
-                         var config = {
-                         headers:{ 'Authorization':  'Bearer ' + token} 
-                         };
-
-                         $http.post('/upload',undefined, config).then(
-                         function(response){
-                             if(response.status == 200){
-                                 $window.location.href = "/upload";
-                             } else {
-                                 $scope.alertLoginUser = "Unable to login! Please use personal data"
-                             }
-                         });*/
                         
                     }
                     
                 }
-            },
+            }*/
+            AuthenticateUserFactory.authenticate,
+            
             function(error) {
-                $scope.alertLoginUser = 'Oops! Something\'s wrong! Please, try again!';
+                $mdToast.show(
+                $mdToast.simple()
+                    .textContent('Oops! Something\'s wrong! Please, try again!')
+                    .toastClass('errorAuth')
+                    .parent(document.querySelectorAll('#toaster'))
+                    .position('top right')
+                    .hideDelay(3000)
+                )
             });
     }
   })

@@ -14,25 +14,54 @@
                     <div class = "col-12 col-md-6 col-lg-5">
                         <div class = "card">
                             <div class = "card-body">
-                                <form method="post">
+                                <!-- <form method="post">
                                     <div class="form-group">
                                         <label for="username">Username</label>
                                         <div class="input-group">
                                           <span class="input-group-addon"><div style="font-size: 19px;padding: 4px;"><i class="fas fa-user"></i></div></span>
-                                          <input type="text" class="form-control" placeholder="Username">
+                                          <input type="text" class="form-control" placeholder="Username" ng-model = "username" name = "userName">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="password">Password</label>
                                         <div class="input-group">
                                           <span class="input-group-addon"><div style="font-size: 19px;padding: 4px;"><i class="fas fa-key"></i></div></span>
-                                          <input type="password" class="form-control" placeholder="Password">
+                                          <input type="password" class="form-control" placeholder="Password" ng-model = "password" name = "userPassword" >
                                         </div>
                                     </div>
                                      <div class="form-group pull-left">
-                                        <button class="btn btn-lg btn-success btn-block login" type="submit" name="submit">Login</button>
+                                        <button class="btn btn-lg btn-success btn-block login" type="submit" name="submit" ng-click = "loginUser()">Login</button>
                                     </div>
-                                </form> 
+                                </form> -->
+                                <form method="post" class="formular" name = "loginForm">
+                                    <md-input-container class="md-block md-icon-left" flex>
+
+                                          <md-icon class="material-icons"><i class="fas fa-user"></i></md-icon> 
+                                          <input type="text" class="form-control" placeholder="Username" ng-model = "username" name = "userName" minlength="5" maxlength="15" required/>
+
+                                            <div ng-messages="registerForm.userName.$error" style="color:tomato" role="alert" multiple>
+                                                <div ng-message="minlength">Your username is too short</div>
+                                                <div ng-message="maxlength">Your username is too long</div>
+                                            </div>
+
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block md-icon-left" flex>
+
+                                          <md-icon class="material-icons"><i class="fas fa-key"></i></md-icon> 
+                                          <input type="password" class="form-control" placeholder="Password" ng-model = "password" name = "userPassword" ng-minlength="5" ng-maxlength="15" required/>
+
+                                            <div ng-messages="registerForm.userPassword.$error" style="color:tomato" role="alert" multiple>
+                                                <div ng-message="minlength">Your password is too short</div>
+                                                <div ng-message="maxlength">Your password is too long</div>
+                                            </div>
+
+                                    </md-input-container>
+
+                                     <div class="form-group pull-left">
+                                        <button class="btn btn-lg btn-success btn-block login" type="submit" name="submit" ng-click = "loginUser()" ng-disabled="!loginForm.$valid" >Login</button>
+                                    </div>
+                                </form>
                             </div>
                          </div>
                     </div>

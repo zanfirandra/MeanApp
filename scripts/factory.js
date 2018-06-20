@@ -30,6 +30,35 @@ var factory = {};
   return factory;
 });
 
+appFactory.factory('AuthenticateUserFactory',['$window','$mdToast' ,'AuthTokenFactory', function AuthenticateUserFactory($window, $mdToast, AuthTokenFactory){
+    var factory = {};
+    
+    factory.authenticate = function(response){
+        
+        if( typeof response.data != 'object'){
+            if(response.data.indexOf("errorLoginUser") >= 0){
+                var getResponse = response.data.split(":");
+                $mdToast.show(
+                $mdToast.simple()
+                    .textContent(getResponse[1])
+                    .toastClass('errorAuth')
+                    .parent(document.querySelectorAll('#toaster'))
+                    .position('top right')
+                    .hideDelay(3000)
+                );
+            } 
+        } else {
+            if(response.data.token){
+                AuthTokenFactory.setToken(response.data.token); //factory
+                $window.location.href = "/upload";
+            }
+        }
+        
+    }
+    
+    return factory;
+}])
+
 appFactory.factory('AuthInterceptor', [ '$q','$window', '$location', 'AuthTokenFactory', function($q, $window, $location, AuthTokenFactory) {
     return {
       request: function(config) {
